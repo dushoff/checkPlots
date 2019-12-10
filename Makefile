@@ -10,8 +10,9 @@ current: target
 
 # Content
 
-vim_session:
-	bash -cl "vmt"
+Sources += $(wildcard *.R)
+
+roswell.Rout: setY.Rout roswell.R
 
 ######################################################################
 
@@ -30,6 +31,8 @@ makestuff/Makefile:
 	ls $@
 
 -include makestuff/os.mk
+-include makestuff/wrapR.mk
 -include makestuff/git.mk
+
 -include makestuff/visual.mk
 -include makestuff/projdir.mk
