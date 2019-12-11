@@ -14,6 +14,8 @@ Sources += $(wildcard *.R)
 
 roswell.Rout: setY.Rout roswell.R
 
+beast.Rout: checkFuns.Rout beast.R
+
 ######################################################################
 
 ### Makestuff
