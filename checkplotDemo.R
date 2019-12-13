@@ -9,12 +9,12 @@ library(tidyverse)
 library(furrr)
 # library(exactci) #could probably get the Blaker intervals from this package
 
-# set up parallel stuff (take too long otherwise)
+# set up parallel stuff (some tests can take too long otherwise, but could probably get rid of this and lower reps, going to change to 5e3 actually)
 plan(strategy=multiprocess, workers=7)
 # generate binomial data, adapted from JD notebook and using the Braker also
 
 set.seed(7082)
-numSims <- 1e5
+numSims <- 5e4
 n <- 100
 #for binomial
 prob <- 0.97
@@ -24,7 +24,6 @@ mu<-22
 sd<-4
 
 ## Sim
-dat <- rbinom(numSims, n, prob)
 datNorm<-map(1:numSims, function(x){rnorm(n, mean=mu, sd)})
 
 #make output with binom.test
@@ -88,7 +87,7 @@ to_checkplot<-map_dfr(c(0.5, 0.75, 0.9, 0.97), function(prob){
   return(k)
 })
 
-checkplot(to_checkplot, facets=6)+
+checkplot(to_checkplot, facets=8)+
   facet_grid(testv~prob, scales="free_y")+
   labs(x="nominal p-value")+
   scale_x_continuous(expand=c(0,0)) +
