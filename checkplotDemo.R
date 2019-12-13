@@ -97,33 +97,20 @@ checkplot(to_checkplot, facets=6)+
 
 ##########
 # do it again with normal data, continuous cdf
+normtests<- map_dfr(datNorm, function(samp){
+  p<-t.test(samp, mu=mu, alternative="l")$p.value
+  ci<-t.test(samp, mu=mu)
+  lower<-ci$conf.int[1]
+  upper<-ci$conf.int[2]
+  est<-ci$estimate
+  return(data.frame(p, lower, upper, est))
+})
 
-checkplot(
-  map_dfr(datNorm, function(samp){
-    p<-t.test(samp, mu=mu, alternative="l")$p.value
-    ci<-t.test(samp, mu=mu)
-    lower<-ci$conf.int[1]
-    upper<-ci$conf.int[2]
-    est<-ci$estimate
-    return(data.frame(p, lower, upper, est))
-  })
-)+theme_classic()
-
-
+checkplot(normtests)+
+  theme_classic()
 
 
-testaccept<-multBinom(dat, prob, n, testv="accept")
-testchisq<-multBinom(dat, prob, n, testv="chisq")
-testwald<-multBinom(dat, prob, n, testv="wald")
-testjd<-multBinom(dat, prob, n, testv="binom.test")
-
-print(pianoPlot(testaccept$p))
-print(pianoPlot(testchisq$p))
-print(pianoPlot(testwald$p))
-
-print(pianoPlot(testjd$p))
-
-print(rangePlot(testaccept, orderFun=blob, opacity=0.02))
-print(rangePlot(testchisq, orderFun=blob, opacity=0.02))
-print(rangePlot(testjd, orderFun=blob, opacity=0.02))
-print(rangePlot(testwald, orderFun=blob, opacity=0.002))
+# print(rangePlot(testaccept, orderFun=blob, opacity=0.02))
+# print(rangePlot(testchisq, orderFun=blob, opacity=0.02))
+# print(rangePlot(testjd, orderFun=blob, opacity=0.02))
+# print(rangePlot(testwald, orderFun=blob, opacity=0.002))
