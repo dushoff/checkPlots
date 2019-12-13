@@ -7,8 +7,8 @@ source("acceptBin.R")
 #librarires
 library(tidyverse)
 library(furrr)
-library(exactci)
-binom.exact
+# library(exactci) #could probably get the Blaker intervals from this package
+
 # set up parallel stuff (take too long otherwise)
 plan(strategy=multiprocess, workers=7)
 # generate binomial data, adapted from JD notebook and using the Braker also
@@ -16,17 +16,21 @@ plan(strategy=multiprocess, workers=7)
 set.seed(7082)
 numSims <- 1e5
 n <- 100
+#for binomial
 prob <- 0.97
+
+# for normal
 mu<-22
 sd<-4
 
 ## Sim
 dat <- rbinom(numSims, n, prob)
+datNorm<-map(1:numSims, function(x){rnorm(n, mean=mu, sd)})
 
 #make output with binom.test
 #make again with acceptbin... this looks not good not sure we need to go further.
 
-multBinom <- function(dat, prob0, n, testv=c("binom.test", "accept", "chisq")){
+multBinom <- function(dat, prob0, n, testv=c("binom.test", "accept", "chisq", "wald")){
   if(testv=="binom.test"){
     df <- map_dfr(dat, function(d){
     # df<-future_map_dfr(1:length(dat)/100, function(repset){
@@ -48,14 +52,26 @@ multBinom <- function(dat, prob0, n, testv=c("binom.test", "accept", "chisq")){
       return(data.frame(est=d/n, p, upper=ci[2], lower=ci[1]))
     })
   }
-  if(testv=="chisq"){
+  #I think maybe this combines a test and an interval that doesn't use that p-value which is not the point. 
+  # if(testv=="chisq"){
+  #   df <- future_map_dfr(dat, function(d){
+  #     bt <- prop.test(d, n, p=prob0, alternative="less")
+  #     gt <- prop.test(d, n, p=prob0, alternative="greater")
+  #     cp <- bt$p.value
+  #     rp <- cp + runif(1)*(1-gt$p.value-cp)
+  #     ci <- prop.test(d, n, p=prob0, alternative="two.sided")
+  #     return(data.frame(est=d/n, cp, p=rp, upper=ci$conf.int[2], lower=ci$conf.int[1]))
+  #   })
+  # }
+  #I think this does that properly: wald intervals and wald p-value. I think I got the wald binomial p right. 
+  if(testv=="wald"){
     df <- future_map_dfr(dat, function(d){
-      bt <- prop.test(d, n, p=prob0, alternative="less")
-      gt <- prop.test(d, n, p=prob0, alternative="greater")
-      cp <- bt$p.value
-      rp <- cp + runif(1)*(1-gt$p.value-cp)
+      p <- pnorm((d/n-prob0)/(((d/n)*((n-d)/n))^0.5*n^(-0.5)))
+      # gt <- prop.test(d, n, p=prob0, alternative="greater")
+      # cp <- bt$p.value
+      # rp <- cp + runif(1)*(1-gt$p.value-cp)
       ci <- prop.test(d, n, p=prob0, alternative="two.sided")
-      return(data.frame(est=d/n, cp, p=rp, upper=ci$conf.int[2], lower=ci$conf.int[1]))
+      return(data.frame(est=d/n, p, upper=ci$conf.int[2], lower=ci$conf.int[1]))
     })
   }
   return(df)
@@ -63,9 +79,9 @@ multBinom <- function(dat, prob0, n, testv=c("binom.test", "accept", "chisq")){
 
 ################
 # make a big dataframe with different probs and 
-to_checkplot<-map_dfr(c(0.75, 0.9, 0.97), function(prob){
+to_checkplot<-map_dfr(c(0.5, 0.75, 0.9, 0.97), function(prob){
   dat <- rbinom(numSims, n, prob)
-  k<-map_dfr(c("binom.test",  "chisq"), function(testv){
+  k<-map_dfr(c("binom.test",  "wald"), function(testv){
    data.frame( multBinom(dat=dat, prob=prob, n=n, testv=testv), testv, prob)
     
   })
@@ -75,21 +91,39 @@ to_checkplot<-map_dfr(c(0.75, 0.9, 0.97), function(prob){
 checkplot(to_checkplot, facets=6)+
   facet_grid(testv~prob, scales="free_y")+
   labs(x="nominal p-value")+
-  scale_x_continuous(expand=c(0,0))+
-  theme_classic()
+  scale_x_continuous(expand=c(0,0)) +
+  theme_classic() + 
+  theme(panel.spacing.x = unit(2, "lines"))
 
 ##########
 # do it again with normal data, continuous cdf
 
+checkplot(
+  map_dfr(datNorm, function(samp){
+    p<-t.test(samp, mu=mu, alternative="l")$p.value
+    ci<-t.test(samp, mu=mu)
+    lower<-ci$conf.int[1]
+    upper<-ci$conf.int[2]
+    est<-ci$estimate
+    return(data.frame(p, lower, upper, est))
+  })
+)+theme_classic()
+
+
+
 
 testaccept<-multBinom(dat, prob, n, testv="accept")
 testchisq<-multBinom(dat, prob, n, testv="chisq")
+testwald<-multBinom(dat, prob, n, testv="wald")
 testjd<-multBinom(dat, prob, n, testv="binom.test")
 
 print(pianoPlot(testaccept$p))
 print(pianoPlot(testchisq$p))
+print(pianoPlot(testwald$p))
+
 print(pianoPlot(testjd$p))
 
 print(rangePlot(testaccept, orderFun=blob, opacity=0.02))
 print(rangePlot(testchisq, orderFun=blob, opacity=0.02))
 print(rangePlot(testjd, orderFun=blob, opacity=0.02))
+print(rangePlot(testwald, orderFun=blob, opacity=0.002))

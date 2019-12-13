@@ -6,6 +6,7 @@ checkplot <- function(stats, breaks=seq(0,1,0.05), tag="", Wmin=0, facets=1){
 		+ geom_histogram(breaks=breaks)
 		+ geom_hline(yintercept=nrow(stats)/(facets*(length(breaks)-1)))
 		+ ggtitle(tag)
+		+ labs(x="nominal p-value")
 	)
 }
 ####### I like the checkplot function better:
