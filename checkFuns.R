@@ -23,7 +23,7 @@ pianoPlot <- function(pvec, breaks=seq(0,1,0.05), tag=""){
 ## rangePlots are named for their order functions:
 ## slug, blob and milli (for millipede)
 ## slug is currently preferred
-rangePlot <- function(tf, target=mean(tf$est), orderFun=slug, alpha=0.05
+rangePlot <- function(tf, target=mean(tf$est), orderFun=slug, conf=0.95
 	, opacity=0.2, fatten=0.1, title="Range plot"
 ){
 	return(ggplot(
@@ -32,10 +32,10 @@ rangePlot <- function(tf, target=mean(tf$est), orderFun=slug, alpha=0.05
 	)
 		+ geom_pointrange(alpha=opacity, fatten=fatten
 		                  , aes(color=ifelse(lower>target |upper<target, "red", "grey")))
-		+ geom_hline(yintercept=0)
+		# + geom_hline(yintercept=0)
 	  + geom_hline(yintercept=target, color="blue")
 		+ geom_vline(
-			xintercept=c(alpha/2, 1-alpha/2)
+			xintercept=c((1-conf)/2, 1-(1-conf)/2)
 			, lty=2, col="red"
 		)
 		+ xlab("index")
