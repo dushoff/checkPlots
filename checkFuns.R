@@ -23,15 +23,17 @@ pianoPlot <- function(pvec, breaks=seq(0,1,0.05), tag=""){
 ## rangePlots are named for their order functions:
 ## slug, blob and milli (for millipede)
 ## slug is currently preferred
-rangePlot <- function(tf, orderFun=slug, alpha=0.05
+rangePlot <- function(tf, target=mean(tf$est), orderFun=slug, alpha=0.05
 	, opacity=0.2, fatten=0.1, title="Range plot"
 ){
 	return(ggplot(
 		orderFun(tf)
 		, aes(x=quantile, y=est, ymin = lower, ymax=upper)
 	)
-		+ geom_pointrange(alpha=opacity, fatten=fatten)
+		+ geom_pointrange(alpha=opacity, fatten=fatten
+		                  , aes(color=ifelse(lower>target |upper<target, "red", "grey")))
 		+ geom_hline(yintercept=0)
+	  + geom_hline(yintercept=target, color="blue")
 		+ geom_vline(
 			xintercept=c(alpha/2, 1-alpha/2)
 			, lty=2, col="red"
@@ -39,10 +41,12 @@ rangePlot <- function(tf, orderFun=slug, alpha=0.05
 		+ xlab("index")
 		+ ylab("estimate")
 		+ ggtitle(title)
+	  + scale_color_manual(values=c("grey", "red"))
+	  + guides(color=F)
 	)
 }
 
-milli <- function(tf){
+milli <- function(tf){ #milli just uses rank estimate
 	numEst <- nrow(tf)
 	return(tf
 		%>% arrange(est)
@@ -52,7 +56,7 @@ milli <- function(tf){
 	)
 }
 
-blob <- function(tf){
+blob <- function(tf){ #blob uses the upper bound when above median, or lower bound when below
 	numEst <- nrow(tf)
 	return(tf
 		%>% mutate(
@@ -66,14 +70,15 @@ blob <- function(tf){
 	)
 }
 
-slug <- function(tf){
-	numEst <- nrow(tf)
+slug <- function(tf){ #slug orders by the bound you care about, dynamically
+  numEst <- nrow(tf)
 	return(tf
 		%>% arrange(est)
 		%>% mutate(
 			estQ=((1:numEst)-1/2)/numEst
-			, pos = estQ*(lower-median(lower))
-				+(1-estQ)*(upper-median(upper))
+			, pos = estQ*(lower-median(lower)) # weight lower bound if high estimate
+				+(1-estQ)*(upper-median(upper)) # weight upper bound if low estimate 
+			#Weights are about equal towards the middle (not as harsh a cutoff as blob)
 		)
 		%>% arrange(pos)
 		%>% mutate(
