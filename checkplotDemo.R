@@ -87,12 +87,18 @@ to_checkplot<-map_dfr(c(0.5, 0.75, 0.9, 0.97), function(prob){
   return(k)
 })
 
-checkplot(to_checkplot, facets=8)+
+pdf("figures/wald_and_cp.pdf", height=4.5)
+checkplot(to_checkplot %>% 
+            mutate(testv=factor(c("Clopper-Pearson exact","Wald")[as.numeric(as.factor(testv))]
+                               , levels=c("Wald","Clopper-Pearson exact")))
+                   , facets=8)+
   facet_grid(testv~prob, scales="free_y")+
   labs(x="nominal p-value")+
   scale_x_continuous(expand=c(0,0)) +
+  scale_y_continuous(expand=c(0,100))+
   theme_classic() + 
   theme(panel.spacing.x = unit(2, "lines"))
+dev.off()
 
 ##########
 # do it again with normal data, continuous cdf
@@ -105,8 +111,11 @@ normtests<- map_dfr(datNorm, function(samp){
   return(data.frame(p, lower, upper, est))
 })
 
+
+pdf("figures/norm_22_4.pdf", width=4, height=3)
 checkplot(normtests)+
   theme_classic()
+dev.off()
 
 
 # print(rangePlot(testaccept, orderFun=blob, opacity=0.02))
