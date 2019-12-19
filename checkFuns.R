@@ -41,6 +41,7 @@ rangePlot <- function(tf, target=mean(tf$est), orderFun=slug, conf=0.95
 		+ xlab("index")
 		+ ylab("estimate")
 		+ ggtitle(title)
+	  + scale_x_continuous(expand=c(0,0))
 	  + scale_color_manual(values=c("grey", "red"))
 	  + guides(color=F)
 	)
