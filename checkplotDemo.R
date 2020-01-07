@@ -111,12 +111,20 @@ normtests<- map_dfr(datNorm, function(samp){
   return(data.frame(p, lower, upper, est))
 })
 
+######
+# some tests to determine how many reps is nice for checkplots
 
 pdf("figures/norm_22_4.pdf", width=4, height=3)
 checkplot(normtests)+
   theme_classic()
 dev.off()
 
+pdf("figures/example_normal_slugplot_22_4.pdf")
+
+rangePlot(normtests)
+
+
+dev.off()
 
 # print(rangePlot(testaccept, orderFun=blob, opacity=0.02))
 # print(rangePlot(testchisq, orderFun=blob, opacity=0.02))
