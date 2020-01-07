@@ -119,11 +119,8 @@ checkplot(normtests)+
   theme_classic()
 dev.off()
 
-pdf("figures/example_normal_slugplot_22_4.pdf")
-
-rangePlot(normtests)
-
-
+png("figures/example_normal_slugplot_22_4.png", width=4, height=3, units="in", res=650)
+rangePlot(normtests, title="slugplot: \nCIs for true mean  based on 100 deviates \nfrom norm(22,4)")
 dev.off()
 
 # print(rangePlot(testaccept, orderFun=blob, opacity=0.02))
