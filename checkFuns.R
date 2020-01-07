@@ -23,11 +23,20 @@ pianoPlot <- function(pvec, breaks=seq(0,1,0.05), tag=""){
 ## rangePlots are named for their order functions:
 ## slug, blob and milli (for millipede)
 ## slug is currently preferred
+
+#I think this needs to be a bit smarter. 
+#First, we need to thin the the number of reps some to get a clear picture. 
+#The number of reps needed for a flat checkplot is much more.
+#I think about 1e3 is the right number to make a slugplot.Obviously not exact
+#Second, we want to mark alpha/2 and 1-(alpha/2) more clearly
 rangePlot <- function(tf, target=mean(tf$est), orderFun=slug, conf=0.95
 	, opacity=0.2, fatten=0.1, title="Range plot"
+	, targ_num=1e3
 ){
+  thinner<-max(floor(length(tf$p)/targ_num), 1)
+  thinned<-tf[seq(thinner, length(tf$p), thinner),]
 	return(ggplot(
-		orderFun(tf)
+		orderFun(thinned)
 		, aes(x=quantile, y=est, ymin = lower, ymax=upper)
 	)
 		+ geom_pointrange(alpha=opacity, fatten=fatten
@@ -41,9 +50,11 @@ rangePlot <- function(tf, target=mean(tf$est), orderFun=slug, conf=0.95
 		+ xlab("index")
 		+ ylab("estimate")
 		+ ggtitle(title)
-	  + scale_x_continuous(expand=c(0,0))
+	  + scale_x_continuous(expand=c(0,0), breaks=c((1-conf)/2, 0.25, 0.5, 0.75, conf+(1-conf)/2)
+	                       , labels=function(breaks){signif(breaks, 3)}))
 	  + scale_color_manual(values=c("grey", "red"))
 	  + guides(color=F)
+	  + theme_classic()
 	)
 }
 
