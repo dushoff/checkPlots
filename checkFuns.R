@@ -29,12 +29,13 @@ pianoPlot <- function(pvec, breaks=seq(0,1,0.05), tag=""){
 #The number of reps needed for a flat checkplot is much more.
 #I think about 1e3 is the right number to make a slugplot.Obviously not exact
 #Second, we want to mark alpha/2 and 1-(alpha/2) more clearly
+#rangeplots don't facet well. Giving up on that. 
 rangePlot <- function(tf, target=mean(tf$est), orderFun=slug, conf=0.95
 	, opacity=0.2, fatten=0.1, title="Range plot"
 	, targ_num=1e3
 ){
-  thinner<-max(floor(length(tf$p)/targ_num), 1)
-  thinned<-tf[seq(thinner, length(tf$p), thinner),]
+  thinner<-max(floor(length(tf$est)/targ_num), 1)
+  thinned<-tf[seq(thinner, length(tf$est), thinner),]
 	return(ggplot(
 		orderFun(thinned)
 		, aes(x=quantile, y=est, ymin = lower, ymax=upper)
