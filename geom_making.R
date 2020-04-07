@@ -5,16 +5,35 @@
 # https://stackoverflow.com/questions/55811839/extending-ggplot2-with-a-custom-geometry-for-sf-objects/55823898#55823898
 
 StatSlug<- ggproto("StatSlug", Stat
-                   , compute_group = function(data, scales, orderFun="slug", targ_num=1e3 ) {
+                   , compute_group = function(data, scales, orderFun=slug, targ_num=1e3 ) {
                        thinner<-max(floor(length(data$est)/targ_num), 1)
-                       thinned<-data[seq(thinner, length(data$est), thinner),]
-                       orderFun(thinned$est, thinned$upper, thinned$lower)
+                       thinned<-data[seq(thinner, length(data$est), thinner),, drop=T]
+                       orderFun(thinned, thinned$est, thinned$upper, thinned$lower)
                      #if we want these aes to be required (which allows specifying your own names) then want the functions to be like this
                           }
                    , required_aes = c("est", "upper", "lower")
+                  # , default_aes =
 )
 
+stat_slug <- function(mapping = NULL, data = NULL, geom = "pointrange"
+                       , position = "identity", na.rm = FALSE, show.legend = NA 
+                       , inherit.aes = T, ...) {
+  ggplot2::layer(
+    stat = StatSlug, data = data
+    , mapping = aes(y=est, ymin=lower, ymax=upper, x=stat(quantile))
+    , geom = geom
+    , position = position
+    , show.legend = show.legend
+    , inherit.aes = inherit.aes
+    , params = list(na.rm = na.rm, ...)
+  )
+}
 
+ggplot(normtests, aes(est=est, upper=upper, lower=lower))+
+  stat_slug(targ_num=50)
+
+
+ggplot(slug(normtests), aes(x=quantile, y=est, ymin=lower, ymax=upper))+geom_pointrange()
 
 ## rangePlots are named for their order functions:
 ## slug, blob and milli (for millipede)
@@ -55,7 +74,7 @@ rangePlot <- function(tf, target=mean(tf$est), orderFun=slug, conf=0.95
   )
 }
 
-milli <- function(tf, est=est){ #milli just uses rank estimate
+milli <- function(tf, est="est"){ #milli just uses rank estimate
   numEst <- nrow(tf)
   return(tf
          %>% arrange(est)
@@ -65,7 +84,7 @@ milli <- function(tf, est=est){ #milli just uses rank estimate
   )
 }
 
-blob <- function(tf, est=est, upper=upper, lower=lower){ #blob uses the upper bound when above median, or lower bound when below
+blob <- function(tf, est="est", upper=upper, lower=lower){ #blob uses the upper bound when above median, or lower bound when below
   numEst <- nrow(tf)
   return(tf
          %>% mutate(
@@ -79,7 +98,7 @@ blob <- function(tf, est=est, upper=upper, lower=lower){ #blob uses the upper bo
   )
 }
 
-slug <- function(tf, upper=upper, lower=lower){ #slug orders by the bound you care about, dynamically
+slug <- function(tf, est=est, upper=upper, lower=lower){ #slug orders by the bound you care about, dynamically
   numEst <- nrow(tf)
   return(tf
          %>% arrange(est)
