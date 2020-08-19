@@ -24,7 +24,11 @@ mu<-22
 sd<-4
 
 ## Sim
-datNorm<-map(1:numSims, function(x){rnorm(n, mean=mu, sd)})
+datNorm<-future_map_dfr(c(11,15,22,36), function(mymean){
+    map_dfr(1:numSims, function(x){
+      data.frame(mu=mymean, t(rnorm(n, mean=mymean, sd)))
+      })
+})
 
 #make output with binom.test
 #make again with acceptbin... this looks not good not sure we need to go further.
@@ -102,13 +106,13 @@ dev.off()
 
 ##########
 # do it again with normal data, continuous cdf
-normtests<- map_dfr(datNorm, function(samp){
-  p<-t.test(samp, mu=mu, alternative="l")$p.value
-  ci<-t.test(samp, mu=mu)
+normtests<- future_map_dfr(1:length(datNorm$mu), function(samp){
+  p<-t.test(datNorm[samp, -1], mu=datNorm[samp,1], alternative="l")$p.value
+  ci<-t.test(datNorm[samp, -1], mu=datNorm[samp,1])
   lower<-ci$conf.int[1]
   upper<-ci$conf.int[2]
   est<-ci$estimate
-  return(data.frame(p, lower, upper, est))
+  return(data.frame(p, lower, upper, est, tm=datNorm[samp,1]))
 })
 
 ######
@@ -122,6 +126,17 @@ dev.off()
 png("figures/example_normal_slugplot_22_4.png", width=4, height=3, units="in", res=650)
 rangePlot(normtests, title="slugplot: \nCIs for true mean  based on 100 deviates \nfrom norm(22,4)")
 dev.off()
+
+rangePlot(ne)+
+  facet_wrap(~tm, scales="free_y")
+
+rangePlot(ne, target = "fakemu")+
+  facet_wrap(~tm, scales="free_y")
+
+
+ne<-normtests %>% mutate(fakemu=tm+3)
+target<-"fakemu"
+ne[,target]
 
 # print(rangePlot(testaccept, orderFun=blob, opacity=0.02))
 # print(rangePlot(testchisq, orderFun=blob, opacity=0.02))

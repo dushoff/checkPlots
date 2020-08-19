@@ -1,6 +1,29 @@
 
 ## In the middle of modularizing: checkplot should be wpPlot and should call pianoplot
-checkplot <- function(stats, breaks=seq(0,1,0.05), tag="", Wmin=0, facets=1){
+
+#' Create a checkplot
+#' 
+#' Visual tool to determine if nominal p-values for Monte-Carlo simulations under a given (null) hypothesis is true have uniform distribution 
+#' 
+#' @importFrom ggplot2 aes, geom_histogram, geom_line, ggtitle, labs, geom_pointrange, scale_x_continuous, geom_hline, geom_vline, xlab, ylab, scale_color_manual, theme_classic, guides, ggplot
+#' 
+#' @importfrom dplyr mutate, arrange
+#' 
+#' @param stats Dataframe with a column called `p` containing nominal p-values
+#' @param breaks Numeric vector in \[0,1\], determining bar widths for geom_histogram
+#' 
+#' @param tag optional character string for a ggtitle
+#' @param Wmin scalar, to filter the df "stats"
+#' @param facets Integer, number of facets if using facet_wrap or similar
+#' 
+#' @return ggplot object, a checkplot
+#' @aliases checkplot
+#' 
+#' @export
+#' @examples 
+#' 
+
+checkPlot <- function(stats, breaks = seq(0,1,0.05), tag = "", Wmin = 0, facets = 1){
 	# stats <- filter(stats, W>Wmin)
 	return(ggplot(stats, aes(p))
 		+ geom_histogram(breaks=breaks)
