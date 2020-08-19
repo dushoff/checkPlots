@@ -1,15 +1,29 @@
-Package: checkPlots
-Title: What the Package Does (One Line, Title Case)
+Package: checkPlotR
+Title: Tools for visually assessing nominal CI and p-values
 Version: 0.0.0.9000
+Maintainer: Michael Roswell <mike.roswell@gmail.com>
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+   c( person(given = "Michael",
+           family = "Roswell",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+           email = "mike.roswell@gmail.com",
+           comment = c(ORCID = "0000-0002-8479-9184"))
+    , person(given = "Jonathan",
+           family = "Dushoff",
+           role = c("aut"),
+           email = "jdushoff@gmail.com",
+           comment = c(ORCID = "0000-0003-0506-4794"))
+           )
+Description: Statistically valid p-values should have uniform density\;
+  frequentist confidence intervals (CI) should achieve (at least) nominal 
+  coverage, andbe unbiased in the sense that the probability that the target 
+  value falls below the CI is equal to the probablility that the target value 
+  falls above the CI. These properties are guaranteed with pivotal statistics for 
+  continuous distributions but not for many statistical applications of p-values 
+  and CI. In such cases p-values and CI may be visually tested with checkplots 
+  (which assess the uniformity of p-values) and with rangeplots, a family of plots 
+  to vizualize the distribution of CI under monte-carlo sampling. 
+License: LGPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
