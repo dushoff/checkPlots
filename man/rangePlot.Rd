@@ -6,13 +6,13 @@
 \usage{
 rangePlot(
   tf,
-  target = mean(tf$est),
   orderFun = slug,
   conf = 0.95,
   opacity = 0.2,
   fatten = 0.1,
   title = "Range plot",
-  targ_num = 1000
+  targ_num = 1000,
+  target = NA
 )
 }
 \description{
@@ -23,7 +23,7 @@ value of the statistic to examine statistical coverage and bias
 of CI
 }
 \details{
-@param tf dataframe with estimate, and CI upper and lower limits
+@template tf_template
 @param target scalar, value of statistic under (true) hypothesis
 @param orderFun one of \code{c(slug, milli, blob)}, determining the way CI
 are arranged in the plot

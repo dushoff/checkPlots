@@ -16,8 +16,7 @@ Authors@R:
     , person(given = "Michael",
            family = "Li",
            role = c("aut"),
-           email = "lim88@mcmaster.ca",
-           #comment = c(ORCID = "0000-0003-0506-4794"))
+           email = "lim88@mcmaster.ca")
            )
 Description: Statistically valid p-values should have uniform density\;
   frequentist confidence intervals (CI) should achieve (at least) nominal 
@@ -32,11 +31,15 @@ License: LGPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports: 
     magrittr
-    , ggplot2
-    , stats
-    
 Depends: 
     MeanRarity
+    , ggplot2
+    , stats
+    , dplyr
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

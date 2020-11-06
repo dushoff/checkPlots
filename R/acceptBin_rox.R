@@ -3,14 +3,14 @@
 
 #' acceptbin 
 #' 
-#' acceptbin<-function(x, n, p){
+#' 
 #' @param x 
 #' @param n 
 #' @param p 
 #' @examples acceptbin (x =  , n =  , p =  )
 #' @export 
 
-acceptbin <-function (x, n, p) {
+acceptbin <- function(x, n, p){
 	p1 <- 1 - pbinom(x - 1, n, p)
 	p2 <- pbinom(x, n, p)
 	a1 <- p1 + pbinom(qbinom(p1, n, p) - 1, n, p)
@@ -21,7 +21,7 @@ acceptbin <-function (x, n, p) {
 
 #' acceptinterval 
 #' 
-#' acceptinterval<-function(x, n,level=0.95,tolerance=1e-04){ 
+#' 
 #' @param x 
 #' @param n 
 #' @param level 
@@ -29,7 +29,7 @@ acceptbin <-function (x, n, p) {
 #' @examples acceptinterval (x =  , n =  , level = 0.95, tolerance = 1e-04)
 #' @export 
 
-acceptinterval <-function (x, n, level = 0.95, tolerance = 1e-04) {
+acceptinterval <- function (x, n, level = 0.95, tolerance = 1e-04) {
 	lower <- 0
 	upper <- 1
 	if (x != 0) {

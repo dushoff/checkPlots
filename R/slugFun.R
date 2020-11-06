@@ -3,8 +3,8 @@
 
 #' slug 
 #' 
-#' slug <- function(tf){ #slug orders by the bound you care about, dynamically
-#' @param tf 
+#' slug orders by the bound you care about, dynamically
+#' @template tf_template 
 #' @examples slug (tf =  )
 #' @export 
 

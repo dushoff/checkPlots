@@ -5,8 +5,8 @@
 #' 
 #' The Millipede plot orders CI by the \[mean\] parameter estimate
 #' 
-#' milli <- function(tf){ #milli just uses rank estimate
-#' @param tf 
+#' 
+#' @template tf_template
 #' @examples milli (tf =  )
 #' @export 
 

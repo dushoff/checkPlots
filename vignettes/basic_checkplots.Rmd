@@ -1,16 +1,30 @@
-########## Michael style code to generate some example checkplots
+---
+title: "basic_checkplots"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{basic_checkplots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 
-#first call Checkplot code
-source("checkFuns.R")
-#binomial test
-source("acceptBin.R")
-#librarires
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(checkPlotR)
 library(tidyverse)
 library(furrr)
-# library(exactci) #could probably get the Blaker intervals from this package
+```
 
+
+```{r generate data}
 # set up parallel stuff (some tests can take too long otherwise, but could probably get rid of this and lower reps, going to change to 5e3 actually)
-plan(strategy=multiprocess, workers=7)
+nc <- parallel::detectCores()-1
+plan(strategy = multiprocess, workers = nc)
 # generate binomial data, adapted from JD notebook and using the Braker also
 
 set.seed(7082)
@@ -142,3 +156,4 @@ ne[,target]
 # print(rangePlot(testchisq, orderFun=blob, opacity=0.02))
 # print(rangePlot(testjd, orderFun=blob, opacity=0.02))
 # print(rangePlot(testwald, orderFun=blob, opacity=0.002))
+````
