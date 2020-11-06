@@ -24,6 +24,3 @@ ggplot object, a checkplot
 \description{
 Visual tool to determine if nominal p-values for Monte-Carlo simulations under a given (null) hypothesis is true have uniform distribution
 }
-\examples{
-
-}

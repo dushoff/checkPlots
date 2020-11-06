@@ -13,13 +13,18 @@ Authors@R:
            role = c("aut"),
            email = "jdushoff@gmail.com",
            comment = c(ORCID = "0000-0003-0506-4794"))
+    , person(given = "Michael",
+           family = "Li",
+           role = c("aut"),
+           email = "lim88@mcmaster.ca",
+           #comment = c(ORCID = "0000-0003-0506-4794"))
            )
 Description: Statistically valid p-values should have uniform density\;
   frequentist confidence intervals (CI) should achieve (at least) nominal 
   coverage, andbe unbiased in the sense that the probability that the target 
   value falls below the CI is equal to the probablility that the target value 
   falls above the CI. These properties are guaranteed with pivotal statistics for 
-  continuous distributions but not for many statistical applications of p-values 
+  continuous distributions, but not for many statistical applications of p-values 
   and CI. In such cases p-values and CI may be visually tested with checkplots 
   (which assess the uniformity of p-values) and with rangeplots, a family of plots 
   to vizualize the distribution of CI under monte-carlo sampling. 
@@ -30,3 +35,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Imports: 
     magrittr
+    , ggplot2
+    , stats
+    
+Depends: 
+    MeanRarity
