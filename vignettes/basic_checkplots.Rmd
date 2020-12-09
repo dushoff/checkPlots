@@ -23,12 +23,12 @@ library(furrr)
 
 ```{r generate data}
 # set up parallel stuff (some tests can take too long otherwise, but could probably get rid of this and lower reps, going to change to 5e3 actually)
-nc <- parallel::detectCores()-1
-plan(strategy = multiprocess, workers = nc)
+#nc <- parallel::detectCores()-1
+#plan(strategy = multiprocess, workers = nc)
 # generate binomial data, adapted from JD notebook and using the Braker also
 
 set.seed(7082)
-numSims <- 5e4
+numSims <- 5e3
 n <- 100
 #for binomial
 prob <- 0.97
@@ -38,7 +38,7 @@ mu<-22
 sd<-4
 
 ## Sim
-datNorm<-future_map_dfr(c(11,15,22,36), function(mymean){
+datNorm<-map_dfr(c(11,15,22,36), function(mymean){
     map_dfr(1:numSims, function(x){
       data.frame(mu=mymean, t(rnorm(n, mean=mymean, sd)))
       })
