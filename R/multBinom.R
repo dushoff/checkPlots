@@ -18,15 +18,15 @@
 #' 
 #' @examples 
 #' 
-#' #set parameters
+#' # set parameters
 #' p_true <- 0.7
 #' n_trials <- 10
 #' n_samples <- 10
 #' 
-#' #generate data
+#' # generate data
 #' mydat <- rbinom(n_samples, n_trials, p_true)
 #' 
-#' run tests
+#' # run tests
 #' multBinom(mydat, ptrue, n_trials, testv = "binom.test")
 #' multBinom(mydat, ptrue, n_trials, testv = "wald")
 #' 
@@ -49,7 +49,7 @@ multBinom <- function(dat, prob0, n, testv = c("binom.test", "accept", "chisq", 
 		})
 	}
 	if (testv == "accept") {
-		df <- future_map_dfr(dat, function(d) {
+		df <- map_dfr(dat, function(d) {
 			p <- acceptbin(d, n, p = prob0)
 			ci <- acceptinterval(d, n)
 			return(data.frame(est = d/n

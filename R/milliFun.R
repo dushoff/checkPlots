@@ -7,7 +7,7 @@
 #' 
 #' 
 #' @template tf_template
-#' @examples milli (tf =  )
+
 #' @export 
 
 milli <-function (tf) {

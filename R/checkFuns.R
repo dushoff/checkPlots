@@ -1,6 +1,3 @@
-
-## In the middle of modularizing: checkplot should be wpPlot and should call pianoplot
-
 #' Create a checkplot
 #' 
 #' Visual tool to determine if nominal p-values for Monte-Carlo simulations under a given (null) hypothesis is true have uniform distribution 
@@ -31,20 +28,7 @@ checkPlot <- function(stats, breaks = seq(0,1,0.05), tag = "", Wmin = 0, facets 
 		+ labs(x="nominal p-value")
 	)
 }
-# ####### I like the checkplot function better:
-# # it takes a dataframe as its arg that can be the same df as rangePlot
-# pianoPlot <- function(pvec, breaks=seq(0,1,0.05), tag=""){
-# 	stats <- data.frame(p=pvec)
-# 	return(ggplot(stats, aes(p))
-# 		+ geom_histogram(breaks=breaks)
-# 		+ geom_hline(yintercept=nrow(stats)/(length(breaks)-1))
-# 		+ ggtitle(tag)
-# 	)
-# }
 
-## rangePlots are named for their order functions:
-## slug, blob and milli (for millipede)
-## slug is currently preferred
 
 #' Create Rangeplot Based On Order Function
 #' 
@@ -67,7 +51,6 @@ checkPlot <- function(stats, breaks = seq(0,1,0.05), tag = "", Wmin = 0, facets 
 #'  @return a ggplot object with simulated CI arranged about their target value
 #'  
 #'  @export
-#'   
 rangePlot <- function(tf, target=mean(tf$est), orderFun=slug, conf=0.95
 	, opacity=0.2, fatten=0.1, title="Range plot"
 	, targ_num=1e3

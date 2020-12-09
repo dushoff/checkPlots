@@ -25,15 +25,15 @@ consistent outputs regardless of test method.
 }
 \examples{
 
-#set parameters
+# set parameters
 p_true <- 0.7
 n_trials <- 10
 n_samples <- 10
 
-#generate data
+# generate data
 mydat <- rbinom(n_samples, n_trials, p_true)
 
-run tests
+# run tests
 multBinom(mydat, ptrue, n_trials, testv = "binom.test")
 multBinom(mydat, ptrue, n_trials, testv = "wald")
 

@@ -5,7 +5,7 @@
 #' 
 #' blob uses the upper bound when above median, or lower bound when below
 #' @template tf_template 
-#' @examples blob (tf =  )
+
 #' @export 
 
 blob <-function (tf) {

@@ -12,6 +12,3 @@ blob(tf, est = "est", upper = upper, lower = lower)
 \description{
 blob uses the upper bound when above median, or lower bound when below
 }
-\examples{
-blob (tf =  )
-}

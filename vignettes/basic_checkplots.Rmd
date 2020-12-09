@@ -21,7 +21,7 @@ library(furrr)
 ```
 
 
-```{r generate data}
+```{r generate data, eval = F}
 # set up parallel stuff (some tests can take too long otherwise, but could probably get rid of this and lower reps, going to change to 5e3 actually)
 #nc <- parallel::detectCores()-1
 #plan(strategy = multiprocess, workers = nc)
@@ -45,54 +45,6 @@ datNorm<-map_dfr(c(11,15,22,36), function(mymean){
 })
 
 #make output with binom.test
-#make again with acceptbin... this looks not good not sure we need to go further.
-
-multBinom <- function(dat, prob0, n, testv=c("binom.test", "accept", "chisq", "wald")){
-  if(testv=="binom.test"){
-    df <- map_dfr(dat, function(d){
-    # df<-future_map_dfr(1:length(dat)/100, function(repset){
-    #   map_dfr(1:100, function(nexti){
-    #     d <- dat[(repset-1)*100+nexti]
-        bt <- binom.test(d, n, p=prob0, alternative="less")
-        gt <- binom.test(d, n, p=prob0, alternative="greater")
-        cp <- bt$p.value
-        rp <- cp + runif(1)*(1-gt$p.value-cp)
-        ci <- binom.test(d, n, p=prob0, alternative="two.sided")
-        return(data.frame(est=d/n, cp, p=rp, upper=ci$conf.int[2], lower=ci$conf.int[1]))
-      })
-    # })
-  }
-  if(testv=="accept"){
-    df <- future_map_dfr(dat, function(d){
-      p <- acceptbin(d, n, p=prob0)
-      ci <- acceptinterval(d, n)
-      return(data.frame(est=d/n, p, upper=ci[2], lower=ci[1]))
-    })
-  }
-  #I think maybe this combines a test and an interval that doesn't use that p-value which is not the point. 
-  # if(testv=="chisq"){
-  #   df <- future_map_dfr(dat, function(d){
-  #     bt <- prop.test(d, n, p=prob0, alternative="less")
-  #     gt <- prop.test(d, n, p=prob0, alternative="greater")
-  #     cp <- bt$p.value
-  #     rp <- cp + runif(1)*(1-gt$p.value-cp)
-  #     ci <- prop.test(d, n, p=prob0, alternative="two.sided")
-  #     return(data.frame(est=d/n, cp, p=rp, upper=ci$conf.int[2], lower=ci$conf.int[1]))
-  #   })
-  # }
-  #I think this does that properly: wald intervals and wald p-value. I think I got the wald binomial p right. 
-  if(testv=="wald"){
-    df <- future_map_dfr(dat, function(d){
-      p <- pnorm((d/n-prob0)/(((d/n)*((n-d)/n))^0.5*n^(-0.5)))
-      # gt <- prop.test(d, n, p=prob0, alternative="greater")
-      # cp <- bt$p.value
-      # rp <- cp + runif(1)*(1-gt$p.value-cp)
-      ci <- prop.test(d, n, p=prob0, alternative="two.sided")
-      return(data.frame(est=d/n, p, upper=ci$conf.int[2], lower=ci$conf.int[1]))
-    })
-  }
-  return(df)
-}
 
 ################
 # make a big dataframe with different probs and 
@@ -105,8 +57,8 @@ to_checkplot<-map_dfr(c(0.5, 0.75, 0.9, 0.97), function(prob){
   return(k)
 })
 
-pdf("figures/wald_and_cp.pdf", height=4.5)
-checkplot(to_checkplot %>% 
+# pdf("figures/wald_and_cp.pdf", height=4.5)
+checkPlot(to_checkplot %>% 
             mutate(testv=factor(c("Clopper-Pearson exact","Wald")[as.numeric(as.factor(testv))]
                                , levels=c("Wald","Clopper-Pearson exact")))
                    , facets=8)+
@@ -116,11 +68,11 @@ checkplot(to_checkplot %>%
   scale_y_continuous(expand=c(0,100))+
   theme_classic() + 
   theme(panel.spacing.x = unit(2, "lines"))
-dev.off()
+# dev.off()
 
 ##########
 # do it again with normal data, continuous cdf
-normtests<- future_map_dfr(1:length(datNorm$mu), function(samp){
+normtests<- map_dfr(1:length(datNorm$mu), function(samp){
   p<-t.test(datNorm[samp, -1], mu=datNorm[samp,1], alternative="l")$p.value
   ci<-t.test(datNorm[samp, -1], mu=datNorm[samp,1])
   lower<-ci$conf.int[1]
@@ -132,14 +84,14 @@ normtests<- future_map_dfr(1:length(datNorm$mu), function(samp){
 ######
 # some tests to determine how many reps is nice for checkplots
 
-pdf("figures/norm_22_4.pdf", width=4, height=3)
-checkplot(normtests)+
+# pdf("figures/norm_22_4.pdf", width=4, height=3)
+checkPlot(normtests)+
   theme_classic()
-dev.off()
+# dev.off()
 
-png("figures/example_normal_slugplot_22_4.png", width=4, height=3, units="in", res=650)
+# png("figures/example_normal_slugplot_22_4.png", width=4, height=3, units="in", res=650)
 rangePlot(normtests, title="slugplot: \nCIs for true mean  based on 100 deviates \nfrom norm(22,4)")
-dev.off()
+Cdev.off()
 
 rangePlot(ne)+
   facet_wrap(~tm, scales="free_y")

@@ -12,6 +12,3 @@ slug(tf)
 \description{
 slug orders by the bound you care about, dynamically
 }
-\examples{
-slug (tf =  )
-}

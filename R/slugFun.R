@@ -5,7 +5,7 @@
 #' 
 #' slug orders by the bound you care about, dynamically
 #' @template tf_template 
-#' @examples slug (tf =  )
+
 #' @export 
 
 slug <-function (tf) {

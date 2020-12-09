@@ -12,6 +12,3 @@ milli(tf)
 \description{
 The Millipede plot orders CI by the [mean] parameter estimate
 }
-\examples{
-milli (tf =  )
-}
