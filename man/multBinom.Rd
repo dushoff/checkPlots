@@ -34,7 +34,7 @@ n_samples <- 10
 mydat <- rbinom(n_samples, n_trials, p_true)
 
 # run tests
-multBinom(mydat, ptrue, n_trials, testv = "binom.test")
-multBinom(mydat, ptrue, n_trials, testv = "wald")
+multBinom(mydat, p_true, n_trials, testv = "binom.test")
+multBinom(mydat, p_true, n_trials, testv = "wald")
 
 }
