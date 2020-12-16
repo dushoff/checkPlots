@@ -95,6 +95,7 @@ checkPlot(normtests)+
 rangePlot(normtests, title="slugplot: \nCIs for true mean  based on 100 deviates \nfrom norm(22,4)")
 dev.off()
 
+ne<-normtests %>% mutate(fakemu=tm+3)
 rangePlot(ne)+
   facet_wrap(~tm, scales="free_y")
 
@@ -102,9 +103,8 @@ rangePlot(ne, target = "fakemu")+
   facet_wrap(~tm, scales="free_y")
 
 
-ne<-normtests %>% mutate(fakemu=tm+3)
-target<-"fakemu"
-ne[,target]
+
+
 
 # print(rangePlot(testaccept, orderFun=blob, opacity=0.02))
 # print(rangePlot(testchisq, orderFun=blob, opacity=0.02))

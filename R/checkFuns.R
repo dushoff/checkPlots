@@ -1,14 +1,16 @@
-#' Create a checkplot
-#' 
-#' Visual tool to determine if nominal p-values for Monte-Carlo simulations
-#' under a given (null) hypothesis is true have uniform distribution
-#' 
+
 #' @importFrom ggplot2 aes geom_histogram geom_line ggtitle labs geom_pointrange
 #'   scale_x_continuous geom_hline geom_vline xlab ylab scale_color_manual
 #'   theme_classic guides ggplot
 #' 
 #' @importFrom dplyr mutate arrange
+
+NULL
+
+#' Create a checkplot
 #' 
+#' Visual tool to determine if nominal p-values for Monte-Carlo simulations
+#' under a given (null) hypothesis is true have uniform distribution
 #' @param stats Dataframe with a column called `p` containing nominal p-values
 #' @param breaks Numeric vector in \[0,1\], determining bar widths for
 #'   geom_histogram
