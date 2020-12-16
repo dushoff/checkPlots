@@ -4,7 +4,7 @@
 \alias{blob}
 \title{blob}
 \usage{
-blob(tf, est = "est", upper = upper, lower = lower)
+blob(tf)
 }
 \arguments{
 \item{tf}{Dataframe with parameter estimate, CI upper and lower limits.}

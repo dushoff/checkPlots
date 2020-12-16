@@ -21,7 +21,7 @@ library(furrr)
 ```
 
 
-```{r generate data, eval = F}
+```{r generate data}
 # set up parallel stuff (some tests can take too long otherwise, but could probably get rid of this and lower reps, going to change to 5e3 actually)
 #nc <- parallel::detectCores()-1
 #plan(strategy = multiprocess, workers = nc)
@@ -56,7 +56,9 @@ to_checkplot<-map_dfr(c(0.5, 0.75, 0.9, 0.97), function(prob){
   })
   return(k)
 })
+```
 
+```{r make some plots}
 # pdf("figures/wald_and_cp.pdf", height=4.5)
 checkPlot(to_checkplot %>% 
             mutate(testv=factor(c("Clopper-Pearson exact","Wald")[as.numeric(as.factor(testv))]
@@ -91,7 +93,7 @@ checkPlot(normtests)+
 
 # png("figures/example_normal_slugplot_22_4.png", width=4, height=3, units="in", res=650)
 rangePlot(normtests, title="slugplot: \nCIs for true mean  based on 100 deviates \nfrom norm(22,4)")
-Cdev.off()
+dev.off()
 
 rangePlot(ne)+
   facet_wrap(~tm, scales="free_y")

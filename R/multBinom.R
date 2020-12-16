@@ -35,11 +35,11 @@
 multBinom <- function(dat, prob0, n, testv = c("binom.test", "accept", "chisq", "wald")) {
 	if (testv == "binom.test") {
 		df <- purrr::map_dfr(dat, function(d) {
-			bt <- binom.test(d, n, p = prob0, alternative = "less")
-			gt <- binom.test(d, n, p = prob0, alternative = "greater")
+			bt <- stats::binom.test(d, n, p = prob0, alternative = "less")
+			gt <- stats::binom.test(d, n, p = prob0, alternative = "greater")
 			cp <- bt$p.value
 			rp <- cp + runif(1) * (1 - gt$p.value - cp)
-			ci <- binom.test(d, n, p = prob0, alternative = "two.sided")
+			ci <- stats::binom.test(d, n, p = prob0, alternative = "two.sided")
 			return(data.frame(est = d/n
 			                  , cp
 			                  , p = rp
@@ -61,8 +61,8 @@ multBinom <- function(dat, prob0, n, testv = c("binom.test", "accept", "chisq", 
 	}
 	if (testv == "wald") {
 		df <- purrr::map_dfr(dat, function(d) {
-			p <- pnorm((d/n - prob0)/(((d/n) * ((n - d)/n))^0.5 * n^(-0.5)))
-			ci <- prop.test(d, n, p = prob0, alternative = "two.sided")
+			p <- stats::pnorm((d/n - prob0)/(((d/n) * ((n - d)/n))^0.5 * n^(-0.5)))
+			ci <- stats::prop.test(d, n, p = prob0, alternative = "two.sided")
 			return(data.frame(est = d/n
 			                  , p
 			                  , upper = ci$conf.int[2]

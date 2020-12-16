@@ -10,17 +10,19 @@ checkPlot(stats, breaks = seq(0, 1, 0.05), tag = "", Wmin = 0, facets = 1)
 \arguments{
 \item{stats}{Dataframe with a column called \code{p} containing nominal p-values}
 
-\item{breaks}{Numeric vector in [0,1], determining bar widths for geom_histogram}
+\item{breaks}{Numeric vector in [0,1], determining bar widths for
+geom_histogram}
 
 \item{tag}{optional character string for a ggtitle}
 
-\item{Wmin}{scalar, to filter the df "stats"}
+\item{Wmin}{scalar, to filter the df \code{stats}}
 
 \item{facets}{Integer, number of facets if using facet_wrap or similar}
 }
 \value{
-ggplot object, a checkplot
+ggplot object, a "checkPlot"
 }
 \description{
-Visual tool to determine if nominal p-values for Monte-Carlo simulations under a given (null) hypothesis is true have uniform distribution
+Visual tool to determine if nominal p-values for Monte-Carlo simulations
+under a given (null) hypothesis is true have uniform distribution
 }

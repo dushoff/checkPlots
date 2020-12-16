@@ -8,7 +8,7 @@
 
 #' @export 
 
-blob <-function (tf) {
+blob <- function(tf){
 	numEst <- nrow(tf)
 	return(tf %>% 
 	         mutate(side = sign(est - median(est))

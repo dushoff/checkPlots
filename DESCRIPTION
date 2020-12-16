@@ -20,13 +20,13 @@ Authors@R:
            )
 Description: Statistically valid p-values should have uniform density\;
   frequentist confidence intervals (CI) should achieve (at least) nominal 
-  coverage, andbe unbiased in the sense that the probability that the target 
+  coverage, and be unbiased in the sense that the probability that the target 
   value falls below the CI is equal to the probablility that the target value 
   falls above the CI. These properties are guaranteed with pivotal statistics for 
   continuous distributions, but not for many statistical applications of p-values 
   and CI. In such cases p-values and CI may be visually tested with checkplots 
   (which assess the uniformity of p-values) and with rangeplots, a family of plots 
-  to vizualize the distribution of CI under monte-carlo sampling. 
+  to vizualize the distribution of CI under Monte-Carlo sampling. 
 License: LGPL-3
 Encoding: UTF-8
 LazyData: true

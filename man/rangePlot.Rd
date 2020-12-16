@@ -6,21 +6,20 @@
 \usage{
 rangePlot(
   tf,
+  target = mean(tf$est),
   orderFun = slug,
   conf = 0.95,
   opacity = 0.2,
   fatten = 0.1,
   title = "Range plot",
-  targ_num = 1000,
-  target = NA
+  targ_num = 1000
 )
 }
 \description{
 Confidence intervals (CI) consisting of an estimate, upper, and lower limit
 from Monte-Carlo sampling (given that the statistical hypothesis is true) are
-arranged according to \code{orderFun} and compared with the hypothesized (true)
-value of the statistic to examine statistical coverage and bias
-of CI
+arranged according to \code{orderFun} and compared with the hypothesized
+(true) value of the statistic to examine statistical coverage and bias of CI
 }
 \details{
 @template tf_template
