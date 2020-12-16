@@ -15,6 +15,7 @@
 #' @param title character vector for ggtitle
 #' @param targ_num desired number of lines on graph, for dynamic data thinning
 #'  
+#' @importFrom stats median quantile runif pnorm pbinom rbinom rnorm 
 #' @return a ggplot object with simulated CI arranged about their target value
 #'  
 #' @export 
