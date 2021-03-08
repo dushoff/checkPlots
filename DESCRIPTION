@@ -39,6 +39,7 @@ Depends:
     , ggplot2
     , stats
     , dplyr
+Remotes: mikeroswell/MeanRarity
 Suggests: 
     knitr,
     rmarkdown,
