@@ -20,7 +20,7 @@ Authors@R:
            )
 Description: Statistically valid p-values should have uniform density\;
   frequentist confidence intervals (CI) should achieve (at least) nominal 
-  coverage, and be unbiased in the sense that the probability that the target 
+  coverage, and be unbiased, i.e. probability that the target 
   value falls below the CI is equal to the probablility that the target value 
   falls above the CI. These properties are guaranteed with pivotal statistics for 
   continuous distributions, but not for many statistical applications of p-values 
