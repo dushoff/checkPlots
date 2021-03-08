@@ -9,7 +9,7 @@
 #' @param target scalar, value of statistic under (true) hypothesis
 #' @param orderFun one of \code{c(slug, milli, blob)}, determining the way CI
 #' are arranged in the plot
-#' @param conf scalar in [0,1], nominal confidence level of simulated CI
+#' @param conf scalar in \[0,1\], nominal confidence level of simulated CI
 #' @param opacity scalar value for \code{alpha}
 #' @param fatten scalar passed to \code{geom_pointrange}
 #' @param title character vector for ggtitle

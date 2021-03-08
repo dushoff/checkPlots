@@ -41,5 +41,8 @@ Depends:
     , dplyr
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    tidyverse,
+    furrr,
+    purrr
 VignetteBuilder: knitr

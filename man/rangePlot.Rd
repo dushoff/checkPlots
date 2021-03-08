@@ -23,7 +23,7 @@ rangePlot(
 \item{orderFun}{one of \code{c(slug, milli, blob)}, determining the way CI
 are arranged in the plot}
 
-\item{conf}{scalar in \link{0,1}, nominal confidence level of simulated CI}
+\item{conf}{scalar in [0,1], nominal confidence level of simulated CI}
 
 \item{opacity}{scalar value for \code{alpha}}
 
