@@ -39,7 +39,7 @@ makestuff/Makefile:
 	ls $@
 
 -include makestuff/os.mk
--include makestuff/makeR.mk
+-include makestuff/pipeR.mk
 -include makestuff/git.mk
 
 -include makestuff/visual.mk
