@@ -10,8 +10,6 @@ current: target
 
 # Content
 
-runmake = YES
-
 Sources += $(wildcard *.R)
 
 roswell.Rout: setY.Rout roswell.R
@@ -40,6 +38,8 @@ makestuff/Makefile:
 
 -include makestuff/os.mk
 -include makestuff/pipeR.mk
+-include makestuff/rpkg.mk
+
 -include makestuff/git.mk
 
 -include makestuff/visual.mk
