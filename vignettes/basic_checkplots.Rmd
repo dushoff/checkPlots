@@ -110,4 +110,4 @@ dev.off()
 # print(rangePlot(testchisq, orderFun=blob, opacity=0.02))
 # print(rangePlot(testjd, orderFun=blob, opacity=0.02))
 # print(rangePlot(testwald, orderFun=blob, opacity=0.002))
-````
+```
