@@ -11,3 +11,7 @@ construction of frequentist CI.
 
 To use these tools, one must first simulate data and implement a p-value
 estimate.
+
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/dushoff/checkPlots/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dushoff/checkPlots/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
