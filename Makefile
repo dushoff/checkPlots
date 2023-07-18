@@ -20,6 +20,9 @@ tt.Rout: checkFuns.Rout tt.R
 
 statFuns.Rout: checkFuns.Rout statFuns.R
 
+mcElreath.Rout: mcElreath.R
+	$(pipeR)
+
 ######################################################################
 
 ### Makestuff
