@@ -32,7 +32,11 @@
 #' 
 #' @export 
 
-multBinom <- function(dat, prob0, n, testv = c("binom.test", "accept", "chisq", "wald")) {
+multBinom <- function(dat, prob0, n, testv = c("binom.test"
+                                               , "accept"
+                                               , "chisq"
+                                               , "wald")
+                                               ) {
 	if (testv == "binom.test") {
 		df <- purrr::map_dfr(dat, function(d) {
 			bt <- stats::binom.test(d, n, p = prob0, alternative = "less")
@@ -48,6 +52,21 @@ multBinom <- function(dat, prob0, n, testv = c("binom.test", "accept", "chisq", 
 			                  , test = testv))
 		})
 	}
+  if (testv == "chisq") {
+    df <- purrr::map_dfr(dat, function(d) {
+      bt <- stats::prop.test(d, n, p = prob0, alternative = "less")
+      gt <- stats::prop.test(d, n, p = prob0, alternative = "greater")
+      cp <- bt$p.value
+      rp <- cp + runif(1) * (1 - gt$p.value - cp)
+      ci <- stats::prop.test(d, n, p = prob0, alternative = "two.sided")
+      return(data.frame(est = d/n
+                        , cp
+                        , p = rp
+                        , upper = ci$conf.int[2]
+                        , lower = ci$conf.int[1]
+                        , test = testv))
+    })
+  }
 	if (testv == "accept") {
 		df <- purrr::map_dfr(dat, function(d) {
 			p <- acceptbin(d, n, p = prob0)
