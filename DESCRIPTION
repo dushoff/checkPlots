@@ -35,11 +35,9 @@ RoxygenNote: 7.2.3
 Imports: 
     magrittr
 Depends: 
-    MeanRarity
-    , ggplot2
+   ggplot2
     , stats
     , dplyr
-Remotes: mikeroswell/MeanRarity
 Suggests: 
     knitr,
     rmarkdown,

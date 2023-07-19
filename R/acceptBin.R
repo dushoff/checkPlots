@@ -1,5 +1,11 @@
 #### functions from Blaker 2000 modified for R
-acceptbin<-function(x, n, p){
+
+#' Compute acceptability of `p` when `x` is observed and X is Bin(n,p)
+#'
+#' @inheritParams stats::pbinom 
+#' @importFrom stats qbeta qbinom
+#' @noRd
+acceptbin <- function(x, n, p){
   #Computes the acceptability of p when x is observed and X is Bin(n,p)
   
   p1<-1-pbinom(x-1,n,p)
@@ -9,7 +15,15 @@ acceptbin<-function(x, n, p){
   return(min(a1,a2))
 }
 
-acceptinterval<-function(x, n,level=0.95,tolerance=1e-04){ 
+#' Compute acceptability of interval for p at 1 - alpha equal to level 
+#'     (in (0,l)) when x is an observed value of X which is Bin(n,p).
+#'     
+#' @inheritParams stats::pbinom 
+#' @param level numeric, confidence level
+#' @param tolerance numeric, how close should the interval be?
+#' 
+#' @noRd
+acceptinterval <- function(x, n,level=0.95,tolerance=1e-04){ 
   #Computes acceptability interval for p at 1 - alpha equal to level 
   #(in (0,l)) when x is an observed value of X which is Bin(n,p). 
   lower<-0
