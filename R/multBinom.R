@@ -88,6 +88,7 @@ multBinom <- function(dat, prob0, n, testv = c("binom.test"
 		
 			ci <- stats::prop.test(d, n, p = prob0, alternative = "two.sided")
 			return(data.frame(est = d/n
+			                  , cp = p
 			                  , p
 			                  , upper = ci$conf.int[2]
 			                  , lower = ci$conf.int[1]
