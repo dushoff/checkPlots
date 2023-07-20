@@ -54,11 +54,11 @@ multBinom <- function(dat, prob0, n, testv = c("binom.test"
 	}
   if (testv == "chisq") {
     df <- purrr::map_dfr(dat, function(d) {
-      bt <- stats::prop.test(d, n, p = prob0, alternative = "less")
-      gt <- stats::prop.test(d, n, p = prob0, alternative = "greater")
+      bt <- stats::prop.test(d, n, p = prob0, alternative = "less", correct = FALSE)
+      gt <- stats::prop.test(d, n, p = prob0, alternative = "greater", correct = FALSE)
       cp <- bt$p.value
       rp <- cp + runif(1) * (1 - gt$p.value - cp)
-      ci <- stats::prop.test(d, n, p = prob0, alternative = "two.sided")
+      ci <- stats::prop.test(d, n, p = prob0, alternative = "two.sided", correct = FALSE)
       return(data.frame(est = d/n
                         , cp
                         , p = rp
@@ -80,10 +80,17 @@ multBinom <- function(dat, prob0, n, testv = c("binom.test"
 	}
 	if (testv == "wald") {
 		df <- purrr::map_dfr(dat, function(d) {
-			p <- stats::pnorm((d/n - prob0)/(((d/n) * ((n - d)/n))^0.5 * n^(-0.5)))
+			bt <- stats::pnorm((d/n - prob0)/(
+			  ((d/n) * ((n - d)/n))^0.5 * n^(-0.5))
+			  )
+			gt <- stats::pnorm((prob0 - d/n)/(
+			  ((d/n) * ((n - d)/n))^0.5 * n^(-0.5))
+			)
+			rp <- bt + runif(1) * (1 - gt - bt)
 			ci <- stats::prop.test(d, n, p = prob0, alternative = "two.sided")
 			return(data.frame(est = d/n
-			                  , p
+			                  , cp = bt
+			                  , p = rp
 			                  , upper = ci$conf.int[2]
 			                  , lower = ci$conf.int[1]
 			                  , test = testv))
