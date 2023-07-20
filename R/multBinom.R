@@ -83,7 +83,7 @@ multBinom <- function(dat, prob0, n, testv = c("binom.test"
 			bt <- stats::pnorm((d/n - prob0)/(
 			  ((d/n) * ((n - d)/n))^0.5 * n^(-0.5))
 			  )
-			gt <- stats::pnorm((prob0 - d/n)/(
+			gt <- stats::pnorm(((1-prob0)-((n-d)/n))/(
 			  ((d/n) * ((n - d)/n))^0.5 * n^(-0.5))
 			)
 			rp <- bt + runif(1) * (1 - gt - bt)
