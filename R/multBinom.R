@@ -81,20 +81,14 @@ multBinom <- function(dat, prob0, n, testv = c("binom.test"
 	if (testv == "wald") {
 		df <- purrr::map_dfr(dat, function(d) {
 		
-			bt <- stats::pnorm((d/n - prob0)/(
+	p <- stats::pnorm((d/n - prob0)/(
 			  sqrt((1/n) *(d/n)* ((n - d)/n)))
 			  )
 			
-			gt <- stats::pnorm((max(d+1, n)/n - prob0)/(
-			  sqrt((1/n) *(max(d+1,n)/n)* ((n - max(d+1, n))/n)))
-			)
-			
-			
-			rp <- bt + runif(1) * (gt - bt)
+		
 			ci <- stats::prop.test(d, n, p = prob0, alternative = "two.sided")
 			return(data.frame(est = d/n
-			                  , cp = bt
-			                  , p = rp
+			                  , p
 			                  , upper = ci$conf.int[2]
 			                  , lower = ci$conf.int[1]
 			                  , test = testv))
