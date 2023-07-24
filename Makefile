@@ -8,7 +8,7 @@ current: target
 
 ######################################################################
 
-# Content
+# Content (all moved out by Roswell)
 
 Sources += $(wildcard *.R)
 
@@ -19,9 +19,6 @@ beast.Rout: checkFuns.Rout beast.R
 tt.Rout: checkFuns.Rout tt.R
 
 statFuns.Rout: checkFuns.Rout statFuns.R
-
-mcElreath.Rout: mcElreath.R
-	$(pipeR)
 
 ######################################################################
 
