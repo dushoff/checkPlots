@@ -12,11 +12,11 @@ current: target
 
 Sources += $(wildcard *.R)
 
-roswell.Rout: setY.Rout roswell.R
+roswell.Rout: setY.rda roswell.R
 
-beast.Rout: checkFuns.Rout beast.R
+beast.Rout: checkFuns.rda beast.R
 
-tt.Rout: checkFuns.Rout tt.R
+tt.Rout: checkFuns.rda tt.R
 
 statFuns.Rout: checkFuns.Rout statFuns.R
 
