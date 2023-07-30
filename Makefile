@@ -8,7 +8,7 @@ current: target
 
 ######################################################################
 
-# Content
+# Content (all moved out by Roswell)
 
 Sources += $(wildcard *.R)
 

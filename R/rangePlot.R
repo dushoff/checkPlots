@@ -19,11 +19,20 @@
 #' @return a ggplot object with simulated CI arranged about their target value
 #'  
 #' @export 
-rangePlot <- function(tf, target = mean(tf$est), orderFun=slug, conf=0.95
-                      , opacity = 0.2, fatten = 0.1, title = "Range plot"
+rangePlot <- function(tf
+                      , target = mean(tf$est)
+                      , orderFun = slug
+                      , conf=0.95
+                      , opacity = 0.2
+                      , fatten = 0.1
+                      , title = "Range plot"
                       , targ_num = 1e3){
   thinner <- max(floor(length(tf$est)/targ_num), 1)
-  thinned <- tf[seq(thinner, length(tf$est), thinner),]
+  thinned <- tf[seq(thinner
+                    , length(tf$est)
+                    , thinner)
+                ,
+                ]
   return(ggplot(
     orderFun(thinned)
     , aes(x = quantile, y = est, ymin = lower, ymax = upper)
@@ -42,7 +51,7 @@ rangePlot <- function(tf, target = mean(tf$est), orderFun=slug, conf=0.95
                          , breaks = c((1 - conf)/2, 0.25, 0.5, 0.75, conf + (1 - conf)/2)
                          , labels = function(breaks){signif(breaks, 3)})
     + scale_color_manual(values = c("grey", "red"))
-    + guides(color = F)
+    + guides(color = "none")
     + theme_classic()
   )
 }

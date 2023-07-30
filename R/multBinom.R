@@ -32,7 +32,11 @@
 #' 
 #' @export 
 
-multBinom <- function(dat, prob0, n, testv = c("binom.test", "accept", "chisq", "wald")) {
+multBinom <- function(dat, prob0, n, testv = c("binom.test"
+                                               , "accept"
+                                               , "chisq"
+                                               , "wald")
+                                               ) {
 	if (testv == "binom.test") {
 		df <- purrr::map_dfr(dat, function(d) {
 			bt <- stats::binom.test(d, n, p = prob0, alternative = "less")
@@ -48,6 +52,21 @@ multBinom <- function(dat, prob0, n, testv = c("binom.test", "accept", "chisq", 
 			                  , test = testv))
 		})
 	}
+  if (testv == "chisq") {
+    df <- purrr::map_dfr(dat, function(d) {
+      bt <- stats::prop.test(d, n, p = prob0, alternative = "less", correct = FALSE)
+      gt <- stats::prop.test(d, n, p = prob0, alternative = "greater", correct = FALSE)
+      cp <- bt$p.value
+      rp <- cp + runif(1) * (1 - gt$p.value - cp)
+      ci <- stats::prop.test(d, n, p = prob0, alternative = "two.sided", correct = FALSE)
+      return(data.frame(est = d/n
+                        , cp
+                        , p = rp
+                        , upper = ci$conf.int[2]
+                        , lower = ci$conf.int[1]
+                        , test = testv))
+    })
+  }
 	if (testv == "accept") {
 		df <- purrr::map_dfr(dat, function(d) {
 			p <- acceptbin(d, n, p = prob0)
@@ -61,9 +80,15 @@ multBinom <- function(dat, prob0, n, testv = c("binom.test", "accept", "chisq", 
 	}
 	if (testv == "wald") {
 		df <- purrr::map_dfr(dat, function(d) {
-			p <- stats::pnorm((d/n - prob0)/(((d/n) * ((n - d)/n))^0.5 * n^(-0.5)))
+		
+	p <- stats::pnorm((d/n - prob0)/(
+			  sqrt((1/n) *(d/n)* ((n - d)/n)))
+			  )
+			
+		
 			ci <- stats::prop.test(d, n, p = prob0, alternative = "two.sided")
 			return(data.frame(est = d/n
+			                  , cp = p
 			                  , p
 			                  , upper = ci$conf.int[2]
 			                  , lower = ci$conf.int[1]
