@@ -3,7 +3,10 @@
 This repo is for developing the R package checkPlotR, Authors Michael Roswell,
 Michael Li, and Jonathan Dushoff.
 
-The package produces slugPlots (and other rangePlots), which show the behavior
+To install the **R** package **checkPlotR**, run
+`devtools::install_github("dushoff/checkPlots")`
+
+**checkPlotR** produces slugPlots (and other rangePlots), which show the behavior
 of point and interval estimators on the scale of the statistic, for easy
 visualization of statistical coverage, bias, and other weirdness, and also
 checkPlots, which show the behavior of the p-values that underlie the
