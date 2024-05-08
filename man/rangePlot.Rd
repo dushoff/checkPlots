@@ -6,19 +6,20 @@
 \usage{
 rangePlot(
   tf,
-  target = mean(tf$est),
+  target = "sampleMean",
   orderFun = slug,
   conf = 0.95,
   opacity = 0.2,
   fatten = 0.1,
   title = "Range plot",
-  targ_num = 1000
+  targNum = 1000
 )
 }
 \arguments{
 \item{tf}{Dataframe with parameter estimate, CI upper and lower limits.}
 
-\item{target}{scalar, value of statistic under (true) hypothesis}
+\item{target}{scalar, value of statistic under (true) hypothesis, or
+"sampleMean", default, which calculates the sample mean.}
 
 \item{orderFun}{one of \code{c(slug, milli, blob)}, determining the way CI
 are arranged in the plot}
@@ -31,7 +32,7 @@ are arranged in the plot}
 
 \item{title}{character vector for ggtitle}
 
-\item{targ_num}{desired number of lines on graph, for dynamic data thinning}
+\item{targNum}{desired number of lines on graph, for dynamic data thinning}
 }
 \value{
 a ggplot object with simulated CI arranged about their target value
